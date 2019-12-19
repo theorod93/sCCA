@@ -1,7 +1,7 @@
 # sCCA
 Sparse Canonical Correlation Analysis
 
-Functions, simulation models and data analysis performed as part of the CCA paper
+Functions used in performing the analysis presented in the bioRxiv preprint performed as part of the CCA paper
 
 (A) sCCA Functions
   - ConvCCA
