@@ -43,7 +43,7 @@ updateW.relPMDCCA <- function(omega, mu, c, tau, tau_EN = NULL, old, penalty = "
         finalUpdate <- c(updateW_1, updateW_2, updateW_3, updateW_4, updateW_5)
         finalUpdate <- finalUpdate[names(check)] # Puts the data back to the original order
         finalUpdate <- as.numeric(finalUpdate) # Remove the names
-    } else if (penalty = "SCAD") && (element_wise == TRUE)){
+    } else if ((penalty == "SCAD") && (element_wise == TRUE)){
         # Split into five parts, as per the proximal criteria
         # First part
         condition_1 = (0 < check - mu*tau) && (check - mu*tau <= tau)
@@ -251,7 +251,7 @@ relPMDCCA <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, initW_2 
             addX_2_2 <- t(tempW_1) %*% t(X_1) %*% X_2
             Xtile_1 <- rbind(X_1, addX_1_1, addX_1_2)
             Xtilde_2 <- rbind(X_2, addX_2_1, addX_2_2)
-            values = relPMDCCA.algo((X_1 = Xtilde_1, X_2 = Xtilde_2, lambda = lambda, tauW_1 = tauW_1, tauW_2 = tauW_2, initW_1 = initW_1, initW_2 = initW_2, a = a, sd.mu = sd.mu, nIter = nIter, penalty = penalty, element_wise = element_wise, tau_EN = tau_EN))
+            values = relPMDCCA.algo(X_1 = Xtilde_1, X_2 = Xtilde_2, lambda = lambda, tauW_1 = tauW_1, tauW_2 = tauW_2, initW_1 = initW_1, initW_2 = initW_2, a = a, sd.mu = sd.mu, nIter = nIter, penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
             tempW_1 <- cbind(tempW_1, values$w_1)
             tempW_2 <- cbind(tempW_2, values$w_2)
         }
