@@ -1,27 +1,17 @@
-# sCCA
-Sparse Canonical Correlation Analysis
+# sparse Canonical Correlation Analysis (sCCA)
 
-Functions used in performing the analysis presented in the bioRxiv preprint performed as part of the CCA paper
+This repository presents all functions and processes performed for the analysis found in the bioRxiv preprint "Integrating multi-OMICS data through sparse Canonical Correlation Analysis for the prediction of complex traits: A comparison study", by T. Rodosthenous, V. Shahrezaei and M. Evangelou.
 
-(A) sCCA Functions
-  - ConvCCA
-  - RelPMDCCA
-  - PMDCCA was implemented through package (PMA)
-  - Multiple sCCA for ConvCCA and RelPMDCCA
-(B) Data generating models
-  - Simple (two or more)
-  - Single latent variable model (two or more)
-  - Covariance-based model
-(C) Simulation studies
-  - Performing them
-  - Obtaining results
-  - Measures: Corr, Loss, Angle, AUC
-  - Orthogonality and Sparsity
-(D) Data analysis
-  - Description of data
-  - Implementing sCCA on them
-  - Measures: Accuracy, Precision, Recall
-(E) Plots
-  - ROC curves
-  - Boxplots
-  - Scatter plots
+## (A) sCCA Functions:
+- ConvCCA on LASSO and SCAD penalties, for two or more input datasets 
+- RelPMDCCA on LASSO and SCAD penalties, for two or more input datasets
+- Function in obtaining additional canonical pairs
+
+## (B) Simulation Analysis
+- Data generating models
+- Performance assessment
+
+## (C) Data Analysis
+- nutriMouse 
+- cancerTypes
+
