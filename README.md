@@ -13,5 +13,6 @@ This repository presents tho code of the methods, simulation studies and data an
 
 ## (C) Data Analysis
 - nutriMouse 
+  - Data are found under the R package "whitening", by running data("nutrimouse")
 - cancerTypes
-
+  - Data are found in the following link: http://compbio.cs.toronto.edu/SNF/SNF/Software.html
