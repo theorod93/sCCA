@@ -1,6 +1,6 @@
 # Integrating multi-OMICS data through sparse Canonical Correlation Analysis for the prediction of complex traits: A comparison study
 
-This repository presents the code of the methods, simulation studies and data analyses performe in the bioRxiv preprint "Integrating multi-OMICS data through sparse Canonical Correlation Analysis for the prediction of complex traits: A comparison study", by T. Rodosthenous, V. Shahrezaei and M. Evangelou.
+This repository presents the code of the methods, simulation studies and data analyses performed in "Integrating multi-OMICS data through sparse canonical correlation analysis for the prediction of complex traits: a comparison study" by T. Rodosthenous, V. Shahrezaei and M. Evangelou, published in Bioinformatics, Volume 36, Issue 17, Pages 4616–4625.
 
 ## (A) sCCA Functions:
 - ConvCCA on LASSO and SCAD penalties, for two or more input datasets 
