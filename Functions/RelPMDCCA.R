@@ -9,7 +9,7 @@
 
 ## Functions to update canonical vectors within convCCA algorithm
 # penalty can take "SCAD", or "LASSO", or "ELASTIC-NET" all capital
-updateW.relPMDCCA <- function(omega, mu, c, tau, tau_EN = NULL, old, penalty = "LASSO", element_wise = TRUE){
+updateW.relPMDCCA <- function(omega, mu, c, tau, tau_EN = NULL, a=3.7, old, penalty = "LASSO", element_wise = TRUE){
     # tau_EN is the tuning parameter for the second element. It's used in the Elastic-Net
     # Step 1 -- Initialisation
     eta_1 <- -1/(2*(a-1))
