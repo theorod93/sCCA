@@ -18,7 +18,7 @@ updateW.relPMDCCA <- function(omega, mu, c, tau, tau_EN = NULL, a=3.7, old, pena
 
     # Step 2 -- Implement algorithm via given penalty function
     names(check) <- 1:length(check)
-    if ((penalty == "SCAD") %% (element_wise == FALSE)){
+    if ((penalty == "SCAD") && (element_wise == FALSE)){
         # Split into five parts, as per the proximal criteria
         # First part
         condition_1 <- check[apply(check, 1, function(check){return((0 < check - mu*tau) && (check - mu*tau <= tau))})  ]
