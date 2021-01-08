@@ -73,7 +73,7 @@ updateW.relPMDCCA <- function(omega, mu, c, tau, tau_EN = NULL, a=3.7, old, pena
         if (!is.na(condition_1) && condition_1){
             updateW <- check - mu*tau
         } else if (!is.na(condition_2) && condition_2){
-            updateW <- check + updateW
+            updateW <- check + mu*tau
         } else {
             updateW <- old
         }
