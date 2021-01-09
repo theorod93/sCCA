@@ -115,7 +115,7 @@ updateZ <- function(x, old){
   return(update_z)
 }
 
-relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, initW_2 = NULL, a = 3.7, sd.mu = sqrt(2), nIter = 1000, penalty = "LASSO", element_wise = TRUE, tau_EN = NULL){
+relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, initW_2 = NULL, a = 3.7, sd.mu = sqrt(2), nIter = 100, penalty = "LASSO", element_wise = TRUE, tau_EN = NULL){
     # We use X notation for X_1 and Y for X_2
     X <- scale(X_1)
     Y <- scale(X_2)
@@ -142,39 +142,84 @@ relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, ini
     }
     newZ <- rep(0.4, nrow(X))
     newXi <- rep(1,nrow(X))
-
-    # Run the algorithm
-    for (i in 1:nIter){
+    # Initiliase convergence constratint
+    diff <- 1
+    diffTemp <- 1
+    diffW_1 <- 1
+    diffW_2 <- 1
+    n.t.w_1 <- 0
+    n.t <- 0
+    k <- 0
+    k.w_1 <- 0
+    k.w_2 <- 0
+    # Run the algorithm - Iterative updated
+    while (((diff > 1e-05) && (!is.na(diffTemp))) || (n.t < nIter)){
+        k <- k + 1
+        n.t.w_1 <- 0
+        diffW_1 <- 1
+        diffTemp <- 1
         oldW_1 <- newW_1
         oldW_2 <- newW_2
         oldZ <- newZ
         oldXi <- newXi
         # Update First dataset
-        # Compute omega:
-        omega <- oldW_1 - ( (mu.x/lambda)*(t(X)%*%(X%*%oldW_1 - oldZ + oldXi)) )
-        # Compute c:
-        c = t(X)%*%Y%*%oldW_2
-        for (j in 1:length(newW_1)){
-            newW_1[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.x, c = c[j], tau = tauW_1, a = a, old = oldW_1[j], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
+        while (((diffW_1 > 1e-05) && (!is.na(diffTemp))) || (n.t.w_1 < nIter))){
+          k.w_1 <- k.w_1 + 1
+          currentW_1 <- newW_1
+          currentW_2 <- newW_2
+          currentZ <- newZ
+          currentXi <- newXi
+          # Compute omega:
+          omega <- currentW_1 - ( (mu.x/lambda)*(t(X)%*%(X%*%currentW_1 - currentZ + currentXi)) )
+          # Compute c:
+          c = t(X)%*%Y%*%currentW_2
+          for (j in 1:length(newW_1)){
+              newW_1[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.x, c = c[j], tau = tauW_1, a = a, old = currentW_1[j], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
+          }
+          diffTemp <- sqrt(sum((currentW_1 - newW_1)^2))
+          if (!is.na(diffTemp)){
+            diffW_1 <- diffTemp
+          }
+          check_Z <- X%*%newW_1 + currentXi
+          newZ <- updateZ(check_Z, currentZ)
+          newXi <- currentXi + X%*%newW_1 - newZ
+          n.t.w_1 <- n.t.w_1 + 1
         }
-        check_Z <- X%*%newW_1 + oldXi
-        newZ <- updateZ(check_Z, oldZ)
-        newXi <- oldXi + X%*%newW_1 - newZ
+        diffTemp <- 1
+        diffW_2 <- 1
+        n.t.w_2 <- 0
         # Update Second dataset
-        oldW_1 <- newW_1
-        oldW_2 <- newW_2
-        oldZ <- newZ
-        oldXi <- newXi
-        # Compute omega:
-        omega <- oldW_2 - ( (mu.y/lambda)*(t(Y)%*%(Y%*%oldW_2 - oldZ + oldXi)) )
-        # Compute c:
-        c = t(oldW_1)%*%t(X)%*%Y
-        for (j in 1:length(newW_2)){
-            newW_2[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.y, c = c[j], tau = tauW_2, a = a, old = oldW_2[j], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
+        while (((diffW_2 > 1e-05) && (!is.na(diffTemp))) || (n.t.w_2 < nIter))){
+          k.w_2 <- k.w_2 + 1
+          currentW_1 <- newW_1
+          currentW_2 <- newW_2
+          currentZ <- newZ
+          currentXi <- newXi
+          # Compute omega:
+          omega <- oldW_2 - ( (mu.y/lambda)*(t(Y)%*%(Y%*%oldW_2 - currentZ + currentXi)) )
+          # Compute c:
+          c = t(currentW_1)%*%t(X)%*%Y
+          for (j in 1:length(newW_2)){
+              newW_2[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.y, c = c[j], tau = tauW_2, a = a, old = currentW_2[j], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
+          }
+          diffTemp <- sqrt(sum((currentW_2 - newW_2)^2))
+          if (!is.na(diffTemp)){
+            diffW_2 <- diffTemp
+          }
+          check_Z <- Y%*%newW_2 + currentXi
+          newZ <- updateZ(check_Z, currentZ)
+          newXi <- currentXi + Y%*%newW_2 - newZ
+          n.t.w_2 <- n.t.w_2 + 1
         }
-        check_Z <- Y%*%newW_2 + oldXi
-        newZ <- updateZ(check_Z, oldZ)
-        newXi <- oldXi + Y%*%newW_2 - newZ
+        diff0.w_2 <- sqrt(sum((oldW_2 - newW_2)^2))
+        diff0.w_1 <- sqrt(sum((oldW_1 - newW_1)^2))
+        diff0.z <- sqrt(sum((oldZ - newZ)^2))
+        diff0.xi <- sqrt(sum((oldXi - newXi)^2))
+        diffTemp <- diff0.w_1 + diff0.w_2 + diff0.z + diff0.xi
+        if (!is.na(diffTemp)){
+          diff <- diffTemp
+        }
+        n.t <- n.t + 1
     }
     return(list("w_1" = newW_1, "w_2" = newW_2, "z" = newZ, "xi" = newXi))
 }
