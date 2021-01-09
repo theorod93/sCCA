@@ -155,7 +155,7 @@ relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, ini
         # Compute c:
         c = t(X)%*%Y%*%oldW_2
         for (j in 1:length(newW_1)){
-            newW_1[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.x, c = c[j], tau = tauW_1, a = a, old = oldW_1[i], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
+            newW_1[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.x, c = c[j], tau = tauW_1, a = a, old = oldW_1[j], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
         }
         check_Z <- X%*%newW_1 + oldXi
         newZ <- updateZ(check_Z, oldZ)
@@ -170,7 +170,7 @@ relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, ini
         # Compute c:
         c = t(oldW_1)%*%t(X)%*%Y
         for (j in 1:length(newW_2)){
-            newW_2[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.y, c = c[j], tau = tauW_2, a = a, old = oldW_2[i], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
+            newW_2[j] <- updateW.relPMDCCA(omega = omega[j], mu = mu.y, c = c[j], tau = tauW_2, a = a, old = oldW_2[j], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
         }
         check_Z <- Y%*%newW_2 + oldXi
         newZ <- updateZ(check_Z, oldZ)
