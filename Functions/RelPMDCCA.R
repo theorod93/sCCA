@@ -115,6 +115,7 @@ updateZ <- function(x, old){
   return(update_z)
 }
 
+
 relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, initW_2 = NULL, a = 3.7, sd.mu = sqrt(2), nIter = 100, penalty = "LASSO", element_wise = TRUE, tau_EN = NULL){
     # We use X notation for X_1 and Y for X_2
     X <- scale(X_1)
@@ -153,7 +154,7 @@ relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, ini
     k.w_1 <- 0
     k.w_2 <- 0
     # Run the algorithm - Iterative updated
-    while (((diff > 1e-05) && (!is.na(diffTemp))) || (n.t < nIter)){
+    while ((diff > 1e-05) && (!is.na(diffTemp)) && (n.t < nIter)){
         k <- k + 1
         n.t.w_1 <- 0
         diffW_1 <- 1
@@ -163,7 +164,7 @@ relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, ini
         oldZ <- newZ
         oldXi <- newXi
         # Update First dataset
-        while (((diffW_1 > 1e-05) && (!is.na(diffTemp))) || (n.t.w_1 < nIter))){
+        while ((diffW_1 > 1e-05) && (!is.na(diffTemp)) && (n.t.w_1 < nIter)){
           k.w_1 <- k.w_1 + 1
           currentW_1 <- newW_1
           currentW_2 <- newW_2
@@ -189,7 +190,7 @@ relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, ini
         diffW_2 <- 1
         n.t.w_2 <- 0
         # Update Second dataset
-        while (((diffW_2 > 1e-05) && (!is.na(diffTemp))) || (n.t.w_2 < nIter))){
+        while ((diffW_2 > 1e-05) && (!is.na(diffTemp)) && (n.t.w_2 < nIter)){
           k.w_2 <- k.w_2 + 1
           currentW_1 <- newW_1
           currentW_2 <- newW_2
@@ -223,6 +224,7 @@ relPMDCCA.algo <- function(X_1, X_2, lambda, tauW_1, tauW_2, initW_1 = NULL, ini
     }
     return(list("w_1" = newW_1, "w_2" = newW_2, "z" = newZ, "xi" = newXi))
 }
+
 
 multi.relPMDCCA.algo <- function(X, lambda, tau, a = 3.7, sd.mu = sqrt(2), nIter = 1000, penalty = "LASSO", element_wise = TRUE, tau_EN = NULL){
     # Initialisations
