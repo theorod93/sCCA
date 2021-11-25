@@ -268,9 +268,9 @@ multi.relPMDCCA.algo <- function(X, lambda, tau, a = 3.7, sd.mu = sqrt(2), nIter
                     Yv <- Yv + X[[k]]%*%oldW[[k]]
                 }
             }
-            c <- t(X[[j]])%*%
+            cc <- t(X[[j]])%*% Yv
             for (k in 1:length(newW[[j]])){
-                newW[[j]][k] <- updateW.relPMDCCA(omega = omega[k], mu = mu.w[[j]], c = c[k], tau = tau[[j]], a = a, old = oldW[[j]][k], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
+                newW[[j]][k] <- updateW.relPMDCCA(omega = omega[k], mu = mu.w[[j]], c = cc[k], tau = tau[[j]], a = a, old = oldW[[j]][k], penalty = penalty, element_wise = element_wise, tau_EN = tau_EN)
             }
             check_Z <- X[[j]]%*%newW[[j]] + oldXi
             newZ <- updateZ(check_Z, oldZ)
