@@ -235,7 +235,7 @@ multi.relPMDCCA.algo <- function(X, lambda, tau, a = 3.7, sd.mu = sqrt(2), nIter
         if (any(is.na(X[[i]]))){
             stop("Please remove/replace any missing data before implementing sCCA.")
         }
-        if (nrow(X[[i]]) != n.sample){
+        if (nrow(X[[i]]) != n.samples){
             stop("Please make sure that all datasets in list X have the same number of samples")
         }
     }
