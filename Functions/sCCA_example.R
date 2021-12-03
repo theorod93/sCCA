@@ -7,7 +7,6 @@
 
 # Directory # 
 #setwd("")
-setwd("C:/Users/theod/OneDrive - Imperial College London/Documents/Imperial/PhD/R")
 
 # Libraries # 
 library(PMA)
