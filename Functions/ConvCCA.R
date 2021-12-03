@@ -270,7 +270,7 @@ convCCA <-  function(X_1, X_2, tauW_1, tauW_2, initW_1 = NULL, initW_2 = NULL, n
         for (i in 1:R-1){
             addX_1_1 <- t(tempW_1) %*% t(X_1) %*% X_1
             addX_1_2 <- t(tempW_2) %*% t(X_2) %*% X_1
-            addX_2_1 <- t(tempW_2) %*% t(X_2_ %*% X_2
+            addX_2_1 <- t(tempW_2) %*% t(X_2) %*% X_2
             addX_2_2 <- t(tempW_1) %*% t(X_1) %*% X_2
             Xtilde_1 <- rbind(X_1, addX_1_1, addX_1_2)
             Xtilde_2 <- rbind(X_2, addX_2_1, addX_2_2)
